@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="favicon.ico" />
     <title>Java Code Executor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
+    />
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -115,6 +119,12 @@
         background-color: #6c757d;
         cursor: not-allowed;
       }
+      .CodeMirror {
+        height: 300px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -129,7 +139,6 @@
             id="javaCode"
             name="javaCode"
             placeholder="Enter your Java class code here..."
-            required
           ></textarea>
         </div>
         <button type="submit" id="submitBtn">Execute Java Code</button>
@@ -155,14 +164,32 @@
       </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
     <script>
+      var cmEditor = CodeMirror.fromTextArea(
+        document.getElementById("javaCode"),
+        {
+          lineNumbers: true,
+          mode: "text/x-java",
+          indentUnit: 4,
+          tabSize: 4,
+          indentWithTabs: false,
+          lineWrapping: true,
+          matchBrackets: true,
+          autofocus: true,
+        }
+      );
+      cmEditor.setSize(null, 300);
+
       document
         .getElementById("javaForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
 
           const form = e.target;
-          const javaCode = form.javaCode.value;
+          const javaCode = cmEditor ? cmEditor.getValue() : form.javaCode.value;
           const submitBtn = document.getElementById("submitBtn");
           const resultContainer = document.getElementById("resultContainer");
           const resultSection = document.getElementById("resultSection");
