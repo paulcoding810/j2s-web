@@ -1,0 +1,13 @@
+{
+  "name": "j2s-web",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "latest",
+    "morgan": "latest"
+  },
+  "type": "module"
+}
