@@ -1,0 +1,15 @@
+name: j2s
+
+services:
+  j2s-web:
+    hostname: j2s
+    container_name: j2s
+    image: ghcr.io/paulcoding810/j2s-web:latest
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+
+networks:
+  default:
+    name: caddy_net
+    external: true

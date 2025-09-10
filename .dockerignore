@@ -1,0 +1,29 @@
+# VCS
+.git
+.gitignore
+
+# Node
+node_modules
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+pnpm-lock.yaml
+
+# OS / Editor
+.DS_Store
+*.swp
+*.swo
+.vscode
+.idea
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Project artifacts not needed for runtime
+README.md
+j2s/demo.gif
+
+# Tests and coverage (placeholders)
+**/coverage
+**/tests

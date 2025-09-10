@@ -1,0 +1,64 @@
+name: Build and Push Docker
+on:
+  release:
+    types:
+      - created
+  push:
+    branches:
+      - main
+
+jobs:
+  push:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: j2s-web
+            target: web
+            tags_latest: ghcr.io/paulcoding810/j2s-web:latest
+            tags_release: ghcr.io/paulcoding810/j2s-web:${{ github.event.release.name }},ghcr.io/paulcoding810/j2s-web:release
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Github Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_GITHUB_PAT }}
+
+      - name: Build ${{ matrix.name }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          build-args: SERVER_VERSION=nightly
+          file: Dockerfile
+          target: ${{ matrix.target }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ matrix.tags_latest }}
+          cache-from: type=registry,ref=ghcr.io/paulcoding810/j2s-web-build-cache:${{ matrix.target }}
+          cache-to: type=registry,mode=max,ref=ghcr.io/paulcoding810/j2s-web-build-cache:${{ matrix.target }}
+
+      - name: Build ${{ matrix.name }} (release)
+        uses: docker/build-push-action@v5
+        if: github.event_name == 'release'
+        with:
+          context: .
+          build-args: SERVER_VERSION=${{ github.event.release.name }}
+          file: Dockerfile
+          target: ${{ matrix.target }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ matrix.tags_release }}
+          cache-from: type=registry,ref=ghcr.io/paulcoding810/j2s-web-build-cache:${{ matrix.target }}
+          cache-to: type=registry,mode=max,ref=ghcr.io/paulcoding810/j2s-web-build-cache:${{ matrix.target }}
