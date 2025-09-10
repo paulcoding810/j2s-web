@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="favicon.ico" />
-    <title>Java Code Executor</title>
+    <title>Java To Smali</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
@@ -129,8 +129,8 @@
   </head>
   <body>
     <div class="container">
-      <h1>Java Code Executor</h1>
-      <p>Enter your Java class code below and submit to execute it:</p>
+      <h1>Java To Smali Converter</h1>
+      <p>Enter your Java class code below and submit to convert it:</p>
 
       <form id="javaForm">
         <div class="form-group">
@@ -141,7 +141,7 @@
             placeholder="Enter your Java class code here..."
           ></textarea>
         </div>
-        <button type="submit" id="submitBtn">Execute Java Code</button>
+        <button type="submit" id="submitBtn">Convert Now</button>
       </form>
 
       <div id="resultContainer" style="display: none; margin-top: 30px">
@@ -201,11 +201,11 @@
 
           // Show loading state
           submitBtn.disabled = true;
-          submitBtn.textContent = "Executing...";
+          submitBtn.textContent = "Converting...";
           resultContainer.style.display = "block";
           resultSection.className = "result-section loading";
           resultSection.innerHTML =
-            "<h2>⏳ Executing Java Code...</h2><p>Please wait while your code is being compiled and executed.</p>";
+            "<h2>⏳ Converting Java Code...</h2><p>Please wait while your code is being compiled and converted.</p>";
 
           try {
             const formData = new FormData();
@@ -247,7 +247,7 @@
                 html += `
                             <div class="result-section">
                                 <h2>ℹ️ Info</h2>
-                                <p>Java code executed successfully with no output.</p>
+                                <p>Java code is converted successfully with no output.</p>
                             </div>
                         `;
               }
@@ -275,7 +275,7 @@
           } finally {
             // Reset button state
             submitBtn.disabled = false;
-            submitBtn.textContent = "Execute Java Code";
+            submitBtn.textContent = "Convert Now";
           }
         });
     </script>
