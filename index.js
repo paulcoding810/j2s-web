@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
+app.get("/favicon.ico", (req, res) => res.status(204));
 
 // Middleware
 app.use(morgan("combined"));
