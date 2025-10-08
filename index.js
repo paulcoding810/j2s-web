@@ -62,17 +62,9 @@ app.post("/j2s", async (req, res) => {
 
     try {
       // Compile Java code
-      const compileResult = await execAsync(`javac ${javaFileName}`);
       const executeResult = await execAsync(`${j2sPath} ${javaFileName}`);
-      output = executeResult.stdout;
-
-      // Execute Java class
-      // const executeResult = await execAsync(`java ${className}`);
-      // output = executeResult.stdout;
-
-      // if (executeResult.stderr) {
-      //   error = executeResult.stderr;
-      // }
+      output = executeResult?.stdout;
+      error = executeResult?.stderr;
     } catch (execError) {
       error = execError.stderr || execError.message;
       if (execError.stdout) {
@@ -82,8 +74,6 @@ app.post("/j2s", async (req, res) => {
       // Clean up temporary files
       try {
         await unlink(javaFilePath);
-        const classFilePath = join(process.cwd(), `${className}.class`);
-        await unlink(classFilePath);
       } catch (cleanupError) {
         console.error("Cleanup error:", cleanupError.message);
       }
